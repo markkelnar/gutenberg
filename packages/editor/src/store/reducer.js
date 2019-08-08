@@ -126,7 +126,7 @@ export function shouldOverwriteState( action, previousAction ) {
  * @param {Object} state  Current state.
  * @param {Object} action Dispatched action.
  *
- * @returns {Object} Updated state.
+ * @return {Object} Updated state.
  */
 export const editor = flow( [
 	combineReducers,
@@ -558,6 +558,9 @@ export function isReady( state = false, action ) {
 	switch ( action.type ) {
 		case 'SETUP_EDITOR_STATE':
 			return true;
+
+		case 'TEAR_DOWN_EDITOR':
+			return false;
 	}
 
 	return state;

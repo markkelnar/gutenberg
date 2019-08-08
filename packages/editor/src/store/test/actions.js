@@ -20,6 +20,7 @@ import {
 } from '../constants';
 
 jest.mock( '@wordpress/data-controls' );
+jest.mock( '../block-sources' );
 
 select.mockImplementation( ( ...args ) => {
 	const { select: actualSelect } = jest
@@ -337,7 +338,7 @@ describe( 'Post generator actions', () => {
 						dispatch(
 							'core/notices',
 							'createErrorNotice',
-							...[ 'Updating failed', { id: 'SAVE_POST_NOTICE_ID' } ]
+							...[ 'Updating failed.', { id: 'SAVE_POST_NOTICE_ID' } ]
 						)
 					);
 				},
@@ -435,8 +436,7 @@ describe( 'Post generator actions', () => {
 			} );
 		};
 
-		describe( 'yields with expected responses when edited post is not ' +
-			'saveable', () => {
+		describe( 'yields with expected responses when edited post is not saveable', () => {
 			it( 'yields action for selecting if edited post is saveable', () => {
 				reset( false );
 				const { value } = fulfillment.next();
@@ -450,8 +450,7 @@ describe( 'Post generator actions', () => {
 				expect( value ).toBeUndefined();
 			} );
 		} );
-		describe( 'yields with expected responses for when not autosaving ' +
-			'and edited post is new', () => {
+		describe( 'yields with expected responses for when not autosaving and edited post is new', () => {
 			beforeEach( () => {
 				isAutosave = false;
 				isEditedPostNew = true;
@@ -468,8 +467,7 @@ describe( 'Post generator actions', () => {
 			} );
 		} );
 
-		describe( 'yields with expected responses for when not autosaving ' +
-			'and edited post is not new', () => {
+		describe( 'yields with expected responses for when not autosaving and edited post is not new', () => {
 			beforeEach( () => {
 				isAutosave = false;
 				isEditedPostNew = false;
@@ -485,8 +483,7 @@ describe( 'Post generator actions', () => {
 				fetchSuccessConditions.forEach( testRunRoutine );
 			} );
 		} );
-		describe( 'yields with expected responses for when autosaving is true ' +
-			'and edited post is not new', () => {
+		describe( 'yields with expected responses for when autosaving is true and edited post is not new', () => {
 			beforeEach( () => {
 				isAutosave = true;
 				isEditedPostNew = false;
@@ -640,15 +637,24 @@ describe( 'Post generator actions', () => {
 
 describe( 'Editor actions', () => {
 	describe( 'setupEditor()', () => {
+		const post = { content: { raw: '' }, status: 'publish' };
+
 		let fulfillment;
-		const reset = ( post, edits, template ) => fulfillment = actions
+		const reset = ( edits, template ) => fulfillment = actions
 			.setupEditor(
 				post,
 				edits,
 				template,
 			);
+		beforeAll( () => {
+			reset();
+		} );
+
+		it( 'should yield action object for resetPost', () => {
+			const { value } = fulfillment.next();
+			expect( value ).toEqual( actions.resetPost( post ) );
+		} );
 		it( 'should yield the SETUP_EDITOR action', () => {
-			reset( { content: { raw: '' }, status: 'publish' } );
 			const { value } = fulfillment.next();
 			expect( value ).toEqual( {
 				type: 'SETUP_EDITOR',
