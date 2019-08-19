@@ -236,6 +236,7 @@
 		]
 	},
 	"wp-env": {
-		"plugin-dir": "gutenberg"
+		"plugin-dir": "gutenberg",
+		"docker-template": "./bin/docker-compose.override.yml.template"
 	}
 }
