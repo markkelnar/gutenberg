@@ -250,7 +250,7 @@ class GalleryEdit extends Component {
 
 	render() {
 		const { attributes, isSelected, className, noticeUI, setAttributes } = this.props;
-		const { images, columns = defaultColumnsNumber( attributes ), align, galleryCaption, imageCrop, linkTo } = attributes;
+		const { images, columns = defaultColumnsNumber( attributes ), align, caption, imageCrop, linkTo } = attributes;
 		const hasImages = !! images.length;
 
 		const mediaPlaceholder = (
@@ -342,13 +342,13 @@ class GalleryEdit extends Component {
 						} ) }
 					</ul>
 					{ mediaPlaceholder }
-					{ ( ! RichText.isEmpty( galleryCaption ) || isSelected ) && (
+					{ ( ! RichText.isEmpty( caption ) || isSelected ) && (
 						<RichText
 							tagName="figcaption"
 							placeholder={ __( 'Write gallery caption…' ) }
-							value={ galleryCaption }
+							value={ caption }
 							unstableOnFocus={ this.onFocusGalleryCaption }
-							onChange={ ( value ) => setAttributes( { galleryCaption: value } ) }
+							onChange={ ( value ) => setAttributes( { caption: value } ) }
 							isSelected={ this.state.galleryCaptionFocused }
 							inlineToolbar
 						/>
